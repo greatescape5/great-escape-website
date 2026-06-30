@@ -132,8 +132,11 @@
   .instore-li{display:flex;gap:14px;padding:16px 0;border-top:1px solid var(--line)}
   .instore-li b{font-family:'Archivo';font-weight:700}
   .instore-li .k{font-family:'Space Mono';font-size:13px;color:var(--larch-deep);font-weight:700;flex:none;width:54px}
-  .screen{background:var(--ink);border-radius:18px;padding:18px;position:relative;aspect-ratio:4/5;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
-  .screen .pin{position:absolute;width:10px;height:10px;border-radius:50%;background:var(--larch);box-shadow:0 0 0 6px rgba(226,155,51,.18)}
+  .adscreen{position:relative;border-radius:18px;overflow:hidden;background:var(--ink);aspect-ratio:16/9;width:100%}
+  .adscreen iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .adscreen .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;color:var(--glacier)}
+  .adscreen .ph .mono{color:var(--larch);font-size:11px;letter-spacing:.12em;margin-bottom:10px}
+  .adscreen .ph b{font-family:'Archivo';color:#fff;font-size:18px;display:block;margin-bottom:6px}
 
   /* ---------- PORTFOLIO ---------- */
   .port-grid{grid-template-columns:repeat(3,1fr);margin-top:44px}
@@ -386,7 +389,7 @@
       <div class="blk-head">
         <span class="eyebrow">In-Store Digital Displays</span>
         <h2>Turn a checkout-lane wait into a win.</h2>
-        <p>Our screens sit at eye level in high-traffic checkout lanes — motion and color that turn idle minutes into brand recall, right where your neighbors already shop.</p>
+        <p>Our screens sit at eye level in high-traffic checkout lanes — motion and color that turn idle minutes into brand recall. See a live ad run in action.</p>
       </div>
       <div class="instore-grid">
         <div>
@@ -395,21 +398,7 @@
           <div class="instore-li"><span class="k">REAL</span><div><b>Verified local traffic.</b> 30k–40k real shoppers a month per location. No bots, no fake clicks — just neighbors.</div></div>
           <div style="margin-top:22px"><a class="btn btn-dark" href="#contact">Choose Your Plan</a></div>
         </div>
-        <div class="screen">
-          <svg viewBox="0 0 200 120" style="position:absolute;inset:0;width:100%;height:100%;opacity:.4" aria-hidden="true">
-            <g fill="none" stroke="#E29B33" stroke-width="1">
-              <ellipse cx="100" cy="160" rx="60" ry="40"/><ellipse cx="100" cy="160" rx="110" ry="74" opacity=".6"/><ellipse cx="100" cy="160" rx="160" ry="108" opacity=".35"/>
-            </g>
-          </svg>
-          <div class="pin" style="top:30%;left:62%"></div>
-          <div style="position:relative;z-index:2">
-            <div class="mono" style="color:var(--larch);font-size:11px;letter-spacing:.1em">NOW SHOWING · LANE 4</div>
-          </div>
-          <div style="position:relative;z-index:2">
-            <div style="font-family:'Archivo';font-weight:800;color:#fff;font-size:22px;line-height:1.1">YOUR BUSINESS<br>HERE.</div>
-            <div style="color:var(--glacier);font-size:12px;margin-top:8px">Eye-level. High-traffic. Unmissable.</div>
-          </div>
-        </div>
+        <div id="instoreVideoWrap"></div>
       </div>
     </div>
   </section>
@@ -657,6 +646,14 @@
 
       <!-- IN-STORE -->
       <div class="apanel" id="ap-instore">
+        <div class="a-form">
+          <h3>Featured ad-run video <span class="live-chip" style="margin-left:8px">shows on the public In-Store section</span></h3>
+          <p style="font-size:14px;color:var(--slate);margin-bottom:12px">Paste the YouTube link to your ad run. It embeds on the site automatically.</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <input id="is-video" style="flex:1;min-width:240px;padding:10px 12px;border:1.5px solid var(--line);border-radius:8px;font-family:inherit;font-size:14px" placeholder="https://youtu.be/your-video-id">
+            <button class="btn btn-gold" onclick="saveVideo()">Save video</button>
+          </div>
+        </div>
         <div class="stat-row" id="instoreStats"></div>
         <div class="a-form">
           <h3>Add an in-store ad client</h3>
@@ -740,11 +737,8 @@ let pricing = [
    features:["Custom mobile-first design","Up to 5 pages","SEO foundation built in","Lead capture form","Launch + handoff"]}
 ];
 
-let instoreClients = [
-  {client:"Premier Tire LLC", store:"Super 1 Foods — Sandpoint", plan:"Lane Loop", rate:"$150", status:"Active"},
-  {client:"Kevin Hatcher Excavation", store:"Yoke's — Hayden", plan:"Lane Loop", rate:"$150", status:"Active"},
-  {client:"Flow Motion Training", store:"Super 1 Foods — Ponderay", plan:"Premium Loop", rate:"$250", status:"Active"}
-];
+let instoreVideo = "";   // YouTube link for the ad-run video (set in admin)
+let instoreClients = [];  // separate from web-dev portfolio — new line, add real clients as they sign
 let posts = [
   {title:"Why local SEO beats paid ads for North Idaho trades", date:"2026-06-12", status:"Published"},
   {title:"Google Business Profile: the 20-minute setup that ranks", date:"2026-05-28", status:"Published"}
@@ -944,8 +938,20 @@ function addTier(){ pricing.push({name:"New Package",price:"$0",per:"/mo",desc:"
 function removeTier(i){ pricing.splice(i,1); renderPriceEditor(); renderPricing(); toast('Package removed'); }
 
 /* IN-STORE ADMIN */
+function ytId(u){ if(!u) return ''; const m=u.match(/(?:v=|youtu\.be\/|embed\/|shorts\/)([\w-]{11})/); return m?m[1]:(/^[\w-]{11}$/.test(u.trim())?u.trim():''); }
+function renderInstoreVideo(){
+  const wrap=document.getElementById('instoreVideoWrap');
+  const id=ytId(instoreVideo);
+  if(id){
+    wrap.innerHTML=`<div class="adscreen"><iframe src="https://www.youtube.com/embed/${id}" title="In-store ad run" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div>`;
+  }else{
+    wrap.innerHTML=`<div class="adscreen"><div class="ph"><span class="mono">NOW SHOWING · LANE 4</span><b>Your ad-run video goes here</b><span style="font-size:13px;opacity:.8">Paste your YouTube link in Admin → In-Store Ads</span></div></div>`;
+  }
+}
+function saveVideo(){ instoreVideo=document.getElementById('is-video').value.trim(); renderInstoreVideo(); toast(ytId(instoreVideo)?'Ad-run video is live on the site':'Cleared — showing placeholder'); }
 function instoreMRR(){ return instoreClients.filter(c=>c.status==='Active').reduce((s,c)=>s+(parseFloat((c.rate||'').replace(/[^0-9.]/g,''))||0),0); }
 function renderInstore(){
+  const vf=document.getElementById('is-video'); if(vf) vf.value=instoreVideo;
   const locs = new Set(instoreClients.map(c=>c.store)).size;
   const active = instoreClients.filter(c=>c.status==='Active').length;
   document.getElementById('instoreStats').innerHTML=`
@@ -953,7 +959,12 @@ function renderInstore(){
     <div class="astat"><div class="l">Store Locations</div><div class="v">${locs}</div></div>
     <div class="astat"><div class="l">In-Store MRR</div><div class="v">$${instoreMRR().toLocaleString()}</div></div>
     <div class="astat"><div class="l">Est. Monthly Reach</div><div class="v">${(locs*35).toLocaleString()}k</div></div>`;
-  document.getElementById('instoreRows').innerHTML=instoreClients.map((c,i)=>`
+  const rows=document.getElementById('instoreRows');
+  if(!instoreClients.length){
+    rows.innerHTML=`<tr><td colspan="6" style="color:var(--slate-2);padding:20px;font-size:14px">No in-store clients yet — this line is separate from your web-dev work. Add your first client above as they sign on.</td></tr>`;
+    return;
+  }
+  rows.innerHTML=instoreClients.map((c,i)=>`
     <tr><td><b>${c.client}</b></td><td>${c.store}</td><td>${c.plan}</td><td class="mono" style="font-size:13px">${c.rate}/mo</td>
     <td><span class="live-chip">${c.status}</span></td>
     <td><span class="open-link" style="color:#c0392b" onclick="removeInstore(${i})">Remove</span></td></tr>`).join('');
@@ -973,7 +984,7 @@ let toastT;
 function toast(html){const t=document.getElementById('toast');t.innerHTML=html;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2600);}
 
 /* ---------------- INIT ---------------- */
-renderClients();renderOfferings();renderPortfolio();renderTest();renderPricing();
+renderClients();renderOfferings();renderPortfolio();renderTest();renderPricing();renderInstoreVideo();
 </script>
 </body>
 </html>
