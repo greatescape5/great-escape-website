@@ -149,6 +149,21 @@
   .proj .svcs{margin-top:12px;display:flex;flex-wrap:wrap;gap:6px}
   .pill{font-size:11.5px;font-weight:600;background:var(--glacier);color:var(--slate);padding:4px 9px;border-radius:20px}
 
+  /* ---------- PRICING ---------- */
+  .price-grid{grid-template-columns:repeat(3,1fr);margin-top:44px;align-items:stretch}
+  @media(max-width:820px){.price-grid{grid-template-columns:1fr}}
+  .ptier{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:28px;display:flex;flex-direction:column;position:relative}
+  .ptier.feat{border-color:var(--larch);box-shadow:0 18px 44px rgba(226,155,51,.18)}
+  .ptier .flag{position:absolute;top:-11px;left:28px;background:var(--larch);color:var(--ink);font-family:'Space Mono';font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:4px 10px;border-radius:6px;font-weight:700}
+  .ptier h3{font-size:19px}
+  .ptier .pdesc{color:var(--slate);font-size:14px;margin-top:6px;min-height:38px}
+  .ptier .amt{font-family:'Archivo';font-weight:800;font-size:40px;margin:16px 0 2px;letter-spacing:-.03em}
+  .ptier .amt span{font-size:15px;color:var(--slate-2);font-weight:600;font-family:'Hanken Grotesk'}
+  .ptier ul{list-style:none;margin:18px 0 22px;flex:1}
+  .ptier li{padding:8px 0;border-top:1px solid var(--line);font-size:14.5px;display:flex;gap:10px}
+  .ptier li::before{content:"▲";color:var(--larch);font-size:10px;margin-top:5px}
+  .ptier li:first-child{border-top:none}
+
   /* ---------- TESTIMONIALS ---------- */
   .tg{grid-template-columns:repeat(3,1fr);margin-top:40px}
   @media(max-width:820px){.tg{grid-template-columns:1fr}}
@@ -270,7 +285,7 @@
       <a onclick="go('home')">Home</a>
       <a onclick="go('city')">Web Development</a>
       <a href="#instore">In-Store Ads</a>
-      <a href="#offer">SEO</a>
+      <a href="#pricing">Pricing</a>
       <a onclick="go('portfolio')">Work</a>
       <a href="#contact">About</a>
     </nav>
@@ -413,6 +428,19 @@
     </div>
   </section>
 
+  <!-- PRICING -->
+  <section class="blk" id="pricing" style="background:var(--paper);border-top:1px solid var(--line)">
+    <div class="wrap">
+      <div class="blk-head">
+        <span class="eyebrow">Packages</span>
+        <h2>Straightforward pricing, no surprises.</h2>
+        <p>Pick the altitude that fits. Every plan is managed by Tyler directly — small biz helping small biz.</p>
+      </div>
+      <div class="grid price-grid" id="priceGrid"></div>
+      <p class="mono" style="font-size:12px;color:var(--slate-2);margin-top:20px;text-align:center">Custom builds and enterprise ecosystems quoted individually · ask about in-store display bundles</p>
+    </div>
+  </section>
+
   <!-- TESTIMONIALS -->
   <section class="blk">
     <div class="wrap">
@@ -515,7 +543,7 @@
         <a onclick="go('home')">Home</a>
         <a onclick="go('city')">Web Development</a>
         <a href="#instore" onclick="go('home')">In-Store Ads</a>
-        <a href="#offer" onclick="go('home')">SEO Packages</a>
+        <a href="#pricing" onclick="go('home')">SEO Packages</a>
         <a onclick="go('portfolio')">Our Work</a>
         <a href="#contact" onclick="go('home')">Contact</a>
       </div>
@@ -572,6 +600,8 @@
         <button class="atab active" onclick="atab('overview',this)">Overview</button>
         <button class="atab" onclick="atab('cities',this)">Cities (SEO Engine)</button>
         <button class="atab" onclick="atab('portfolio',this)">Portfolio</button>
+        <button class="atab" onclick="atab('pricing',this)">Pricing</button>
+        <button class="atab" onclick="atab('instore',this)">In-Store Ads</button>
         <button class="atab" onclick="atab('blog',this)">Blog</button>
         <button class="atab" onclick="atab('leads',this)">Leads</button>
         <button class="atab" onclick="atab('testimonials',this)">Testimonials</button>
@@ -616,6 +646,31 @@
           <button class="btn btn-gold" onclick="addProject()">Add to portfolio</button>
         </div>
         <table class="atable"><thead><tr><th>Project</th><th>Location</th><th>Services</th><th></th></tr></thead><tbody id="projRows"></tbody></table>
+      </div>
+
+      <!-- PRICING -->
+      <div class="apanel" id="ap-pricing">
+        <p style="color:var(--slate);font-size:14.5px;margin-bottom:18px">Edit a price and it updates on the live site instantly. Use one card as your highlighted plan.</p>
+        <div id="priceEditor"></div>
+        <button class="btn btn-ghost" style="margin-top:6px" onclick="addTier()">+ Add a package</button>
+      </div>
+
+      <!-- IN-STORE -->
+      <div class="apanel" id="ap-instore">
+        <div class="stat-row" id="instoreStats"></div>
+        <div class="a-form">
+          <h3>Add an in-store ad client</h3>
+          <div class="row">
+            <div><label>Client</label><input id="is-client" placeholder="Premier Tire LLC"></div>
+            <div><label>Store / location</label><input id="is-store" placeholder="Super 1 Foods — Sandpoint"></div>
+          </div>
+          <div class="row">
+            <div><label>Plan</label><input id="is-plan" placeholder="Lane Loop"></div>
+            <div><label>Monthly rate</label><input id="is-rate" placeholder="$150"></div>
+          </div>
+          <button class="btn btn-gold" onclick="addInstore()">Add client</button>
+        </div>
+        <table class="atable"><thead><tr><th>Client</th><th>Store / Location</th><th>Plan</th><th>Rate</th><th>Status</th><th></th></tr></thead><tbody id="instoreRows"></tbody></table>
       </div>
 
       <!-- BLOG -->
@@ -675,6 +730,21 @@ let testimonials = [
 ];
 
 let leads = [];
+
+let pricing = [
+  {name:"Standard Growth Pack", price:"$495", per:"/mo", desc:"Get found locally and stay current.", feat:false,
+   features:["Local SEO management","Google Business Profile optimization","Monthly performance report","1 location / service area","Email support"]},
+  {name:"Managed Growth Pack", price:"$1,125", per:"/mo", desc:"Hands-off growth across multiple fronts.", feat:true,
+   features:["Everything in Standard","Content & blog posts","Multi-location SEO","Ongoing site updates","Priority phone support"]},
+  {name:"Website Build", price:"$350+", per:"one-time", desc:"A custom site that converts. Hosting $80/mo.", feat:false,
+   features:["Custom mobile-first design","Up to 5 pages","SEO foundation built in","Lead capture form","Launch + handoff"]}
+];
+
+let instoreClients = [
+  {client:"Premier Tire LLC", store:"Super 1 Foods — Sandpoint", plan:"Lane Loop", rate:"$150", status:"Active"},
+  {client:"Kevin Hatcher Excavation", store:"Yoke's — Hayden", plan:"Lane Loop", rate:"$150", status:"Active"},
+  {client:"Flow Motion Training", store:"Super 1 Foods — Ponderay", plan:"Premium Loop", rate:"$250", status:"Active"}
+];
 let posts = [
   {title:"Why local SEO beats paid ads for North Idaho trades", date:"2026-06-12", status:"Published"},
   {title:"Google Business Profile: the 20-minute setup that ranks", date:"2026-05-28", status:"Published"}
@@ -735,6 +805,17 @@ function renderTest(){
     <div class="quote"><div class="stars">★★★★★</div><p>${t.q}</p>
       <div class="who">${t.who}<span>${t.loc}, ID</span></div></div>`).join('');
 }
+function renderPricing(){
+  document.getElementById('priceGrid').innerHTML = pricing.map(p=>`
+    <div class="ptier${p.feat?' feat':''}">
+      ${p.feat?'<span class="flag">Most popular</span>':''}
+      <h3>${p.name}</h3>
+      <div class="pdesc">${p.desc}</div>
+      <div class="amt">${p.price}<span> ${p.per}</span></div>
+      <ul>${p.features.map(f=>`<li>${f}</li>`).join('')}</ul>
+      <a class="btn ${p.feat?'btn-gold':'btn-dark'}" style="justify-content:center" href="#contact">Get started</a>
+    </div>`).join('');
+}
 function loadCity(c){
   document.getElementById('cityName').textContent=c.name;
   document.getElementById('cityName3').textContent=c.name;
@@ -777,8 +858,8 @@ function atab(name,btn){
 function renderStats(){
   document.getElementById('statRow').innerHTML=`
     <div class="astat"><div class="l">Live City Pages</div><div class="v">${cities.length} <small>indexed</small></div></div>
-    <div class="astat"><div class="l">Sitemap URLs</div><div class="v">${cities.length+projects.length+posts.length+5}</div></div>
-    <div class="astat"><div class="l">Portfolio Projects</div><div class="v">${projects.length}</div></div>
+    <div class="astat"><div class="l">Sitemap URLs</div><div class="v">${cities.length+projects.length+posts.length+6}</div></div>
+    <div class="astat"><div class="l">In-Store MRR</div><div class="v">$${instoreMRR().toLocaleString()}</div></div>
     <div class="astat"><div class="l">New Leads</div><div class="v">${leads.length}</div></div>`;
 }
 function renderCityRows(){
@@ -836,14 +917,63 @@ function renderLeads(){
 function renderTestRows(){
   document.getElementById('testRows').innerHTML=testimonials.map(t=>`<tr><td style="max-width:480px">${t.q}</td><td><b>${t.who}</b><br><span style="font-size:12px;color:var(--slate-2)">${t.loc}</span></td></tr>`).join('');
 }
-function renderAdmin(){renderStats();renderCityRows();renderProjRows();renderBlogRows();renderLeads();renderTestRows();}
+
+/* PRICING ADMIN */
+function renderPriceEditor(){
+  document.getElementById('priceEditor').innerHTML = pricing.map((p,i)=>`
+    <div class="a-form">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <h3 style="margin:0">${p.name||'Package '+(i+1)} ${p.feat?'<span class="live-chip" style="margin-left:6px">highlighted</span>':''}</h3>
+        <span class="open-link" style="color:#c0392b" onclick="removeTier(${i})">Remove</span>
+      </div>
+      <div class="row">
+        <div><label>Package name</label><input value="${p.name}" oninput="upTier(${i},'name',this.value)"></div>
+        <div><label>Short description</label><input value="${p.desc}" oninput="upTier(${i},'desc',this.value)"></div>
+      </div>
+      <div class="row">
+        <div><label>Price</label><input value="${p.price}" oninput="upTier(${i},'price',this.value)"></div>
+        <div><label>Billing label</label><input value="${p.per}" oninput="upTier(${i},'per',this.value)"></div>
+      </div>
+      <div style="margin-bottom:12px"><label style="display:block;font-size:12px;font-family:'Space Mono';color:var(--slate-2);margin-bottom:5px">Features (one per line)</label><textarea rows="4" oninput="upTier(${i},'features',this.value)">${p.features.join('\n')}</textarea></div>
+      <label style="font-size:13px;cursor:pointer"><input type="checkbox" ${p.feat?'checked':''} onchange="setFeat(${i})" style="width:auto;margin-right:6px"> Highlight this as the "Most popular" plan</label>
+    </div>`).join('');
+}
+function upTier(i,k,v){ pricing[i][k] = (k==='features') ? v.split('\n').map(s=>s.trim()).filter(Boolean) : v; renderPricing(); }
+function setFeat(i){ pricing.forEach((p,j)=>p.feat=(j===i)); renderPriceEditor(); renderPricing(); }
+function addTier(){ pricing.push({name:"New Package",price:"$0",per:"/mo",desc:"Describe this plan.",feat:false,features:["Feature one","Feature two"]}); renderPriceEditor(); renderPricing(); toast('Package added — edit the details'); }
+function removeTier(i){ pricing.splice(i,1); renderPriceEditor(); renderPricing(); toast('Package removed'); }
+
+/* IN-STORE ADMIN */
+function instoreMRR(){ return instoreClients.filter(c=>c.status==='Active').reduce((s,c)=>s+(parseFloat((c.rate||'').replace(/[^0-9.]/g,''))||0),0); }
+function renderInstore(){
+  const locs = new Set(instoreClients.map(c=>c.store)).size;
+  const active = instoreClients.filter(c=>c.status==='Active').length;
+  document.getElementById('instoreStats').innerHTML=`
+    <div class="astat"><div class="l">Active Clients</div><div class="v">${active}</div></div>
+    <div class="astat"><div class="l">Store Locations</div><div class="v">${locs}</div></div>
+    <div class="astat"><div class="l">In-Store MRR</div><div class="v">$${instoreMRR().toLocaleString()}</div></div>
+    <div class="astat"><div class="l">Est. Monthly Reach</div><div class="v">${(locs*35).toLocaleString()}k</div></div>`;
+  document.getElementById('instoreRows').innerHTML=instoreClients.map((c,i)=>`
+    <tr><td><b>${c.client}</b></td><td>${c.store}</td><td>${c.plan}</td><td class="mono" style="font-size:13px">${c.rate}/mo</td>
+    <td><span class="live-chip">${c.status}</span></td>
+    <td><span class="open-link" style="color:#c0392b" onclick="removeInstore(${i})">Remove</span></td></tr>`).join('');
+}
+function addInstore(){
+  const client=document.getElementById('is-client').value.trim();
+  if(!client){toast('Add a client name');return;}
+  instoreClients.push({client, store:document.getElementById('is-store').value.trim()||'—', plan:document.getElementById('is-plan').value.trim()||'Lane Loop', rate:document.getElementById('is-rate').value.trim()||'$150', status:'Active'});
+  ['is-client','is-store','is-plan','is-rate'].forEach(id=>document.getElementById(id).value='');
+  renderInstore();renderStats();toast(`<b>${client}</b> added to in-store roster`);
+}
+function removeInstore(i){ instoreClients.splice(i,1); renderInstore();renderStats(); toast('Client removed'); }
+function renderAdmin(){renderStats();renderCityRows();renderProjRows();renderPriceEditor();renderInstore();renderBlogRows();renderLeads();renderTestRows();}
 
 /* ---------------- TOAST ---------------- */
 let toastT;
 function toast(html){const t=document.getElementById('toast');t.innerHTML=html;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2600);}
 
 /* ---------------- INIT ---------------- */
-renderClients();renderOfferings();renderPortfolio();renderTest();
+renderClients();renderOfferings();renderPortfolio();renderTest();renderPricing();
 </script>
 </body>
 </html>
