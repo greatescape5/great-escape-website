@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Great Escape Web &amp; Business Services — North Idaho</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0E1B2A;        /* alpine night blue (anchor) */
+    --slate:#2E3D4E;      /* granite */
+    --slate-2:#51647A;    /* mid granite */
+    --glacier:#DCE6EC;    /* cool pale */
+    --snow:#F5F8FA;       /* light bg */
+    --paper:#FFFFFF;
+    --larch:#E29B33;      /* larch gold accent */
+    --larch-deep:#C77E1C;
+    --steel:#4C8597;      /* cool secondary */
+    --line:rgba(14,27,42,.12);
+    --maxw:1160px;
+    --r:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Hanken Grotesk',system-ui,sans-serif;
+    color:var(--ink);background:var(--snow);
+    line-height:1.55;-webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{font-family:'Archivo',sans-serif;line-height:1.04;letter-spacing:-.02em}
+  .mono{font-family:'Space Mono',monospace}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  .eyebrow{
+    font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--steel);display:inline-flex;gap:8px;align-items:center;
+  }
+  .eyebrow::before{content:"";width:22px;height:1px;background:var(--steel);display:inline-block}
+  .btn{
+    display:inline-flex;align-items:center;gap:9px;font-weight:700;font-size:15px;
+    padding:13px 22px;border-radius:10px;cursor:pointer;border:none;
+    transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+    font-family:'Hanken Grotesk',sans-serif;
+  }
+  .btn-gold{background:var(--larch);color:var(--ink);box-shadow:0 6px 18px rgba(226,155,51,.32)}
+  .btn-gold:hover{transform:translateY(-2px);background:var(--larch-deep)}
+  .btn-ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+  .btn-ghost:hover{border-color:var(--ink)}
+  .btn-dark{background:var(--ink);color:#fff}
+  .btn-dark:hover{transform:translateY(-2px)}
+  :focus-visible{outline:3px solid var(--larch);outline-offset:2px;border-radius:6px}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+  /* ---------- NAV ---------- */
+  header.nav{position:sticky;top:0;z-index:60;background:rgba(245,248,250,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{display:flex;align-items:center;gap:11px;cursor:pointer}
+  .mark{width:34px;height:34px;flex:none}
+  .brand b{font-family:'Archivo';font-weight:800;font-size:16px;letter-spacing:-.01em}
+  .brand span{display:block;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--slate-2);font-weight:600}
+  nav.links{display:flex;gap:26px;align-items:center}
+  nav.links a{font-size:14.5px;font-weight:600;color:var(--slate);transition:color .15s}
+  nav.links a:hover{color:var(--ink)}
+  .nav-cta{display:flex;gap:10px;align-items:center}
+  .menu-btn{display:none;background:none;border:1px solid var(--line);border-radius:8px;padding:8px 10px;cursor:pointer}
+  @media(max-width:920px){nav.links{display:none}.menu-btn{display:block}.nav-cta .btn-ghost{display:none}}
+
+  /* ---------- HERO ---------- */
+  .hero{position:relative;background:var(--ink);color:#fff;overflow:hidden}
+  .hero-topo{position:absolute;inset:0;width:100%;height:100%;opacity:.5}
+  .hero-in{position:relative;z-index:2;padding:96px 0 104px}
+  .hero h1{font-size:clamp(38px,6.4vw,76px);font-weight:800;max-width:14ch;color:#fff}
+  .hero h1 em{font-style:normal;color:var(--larch)}
+  .hero .sub{margin-top:22px;font-size:clamp(16px,2vw,19px);max-width:52ch;color:var(--glacier)}
+  .hero .eyebrow{color:var(--larch)}
+  .hero .eyebrow::before{background:var(--larch)}
+  .hero-cta{margin-top:34px;display:flex;gap:14px;flex-wrap:wrap}
+  .hero-coords{position:absolute;right:24px;bottom:18px;z-index:2;font-family:'Space Mono';font-size:11px;letter-spacing:.1em;color:rgba(220,230,236,.5)}
+  .summit{margin-top:54px;display:flex;gap:26px;flex-wrap:wrap}
+  .summit .stat{}
+  .summit .num{font-family:'Archivo';font-weight:800;font-size:30px;color:#fff}
+  .summit .lbl{font-size:12.5px;color:var(--glacier);letter-spacing:.04em}
+
+  /* ---------- MARQUEE / CLIENTS ---------- */
+  .clients{background:var(--paper);border-bottom:1px solid var(--line);padding:26px 0}
+  .clients-row{display:flex;gap:38px;align-items:center;flex-wrap:wrap;justify-content:center}
+  .clients .lab{font-family:'Space Mono';font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--slate-2)}
+  .client-chip{font-family:'Archivo';font-weight:700;font-size:15px;color:var(--slate);opacity:.78}
+
+  /* ---------- SECTION SHELL ---------- */
+  section.blk{padding:88px 0}
+  .blk-head{max-width:60ch}
+  .blk-head h2{font-size:clamp(28px,4vw,44px);font-weight:800;margin-top:14px}
+  .blk-head p{margin-top:14px;color:var(--slate);font-size:17px;max-width:54ch}
+  .contour-div{height:46px;background-repeat:repeat-x;opacity:.5}
+
+  /* ---------- OFFERINGS ---------- */
+  .grid{display:grid;gap:18px}
+  .off-grid{grid-template-columns:repeat(3,1fr);margin-top:44px}
+  @media(max-width:860px){.off-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.off-grid{grid-template-columns:1fr}}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:26px;transition:transform .18s ease,box-shadow .18s ease;position:relative;overflow:hidden}
+  .card:hover{transform:translateY(-4px);box-shadow:0 16px 38px rgba(14,27,42,.10)}
+  .card .ic{width:42px;height:42px;border-radius:10px;background:var(--ink);display:grid;place-items:center;color:var(--larch);margin-bottom:16px}
+  .card h3{font-size:18.5px;font-weight:700}
+  .card p{margin-top:9px;color:var(--slate);font-size:14.6px}
+  .card .tag{position:absolute;top:18px;right:18px;font-family:'Space Mono';font-size:10px;color:var(--slate-2);letter-spacing:.1em}
+
+  /* ---------- ELEVATION (with/without) ---------- */
+  .elev{background:var(--ink);color:#fff}
+  .elev .blk-head h2{color:#fff}
+  .elev .blk-head p{color:var(--glacier)}
+  .elev .eyebrow{color:var(--larch)} .elev .eyebrow::before{background:var(--larch)}
+  .elev-cols{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:42px}
+  @media(max-width:760px){.elev-cols{grid-template-columns:1fr}}
+  .elev-col{border-radius:var(--r);padding:28px;border:1px solid rgba(255,255,255,.12)}
+  .elev-col.summit-col{background:linear-gradient(180deg,rgba(226,155,51,.16),rgba(226,155,51,.02));border-color:rgba(226,155,51,.4)}
+  .elev-col h4{font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-family:'Space Mono';margin-bottom:6px}
+  .summit-col h4{color:var(--larch)} .base-col h4{color:var(--slate-2)}
+  .elev-col .alt{font-family:'Space Mono';font-size:11px;color:var(--glacier);opacity:.7;margin-bottom:18px}
+  .elev-li{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-top:1px solid rgba(255,255,255,.09);font-size:15px}
+  .elev-li:first-of-type{border-top:none}
+  .elev-li .dot{flex:none;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;margin-top:2px;font-size:11px;font-weight:700}
+  .summit-col .dot{background:var(--larch);color:var(--ink)} .base-col .dot{background:rgba(255,255,255,.1);color:var(--glacier)}
+
+  /* ---------- IN-STORE ---------- */
+  .instore-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center;margin-top:30px}
+  @media(max-width:820px){.instore-grid{grid-template-columns:1fr}}
+  .instore-li{display:flex;gap:14px;padding:16px 0;border-top:1px solid var(--line)}
+  .instore-li b{font-family:'Archivo';font-weight:700}
+  .instore-li .k{font-family:'Space Mono';font-size:13px;color:var(--larch-deep);font-weight:700;flex:none;width:54px}
+  .screen{background:var(--ink);border-radius:18px;padding:18px;position:relative;aspect-ratio:4/5;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
+  .screen .pin{position:absolute;width:10px;height:10px;border-radius:50%;background:var(--larch);box-shadow:0 0 0 6px rgba(226,155,51,.18)}
+
+  /* ---------- PORTFOLIO ---------- */
+  .port-grid{grid-template-columns:repeat(3,1fr);margin-top:44px}
+  @media(max-width:860px){.port-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.port-grid{grid-template-columns:1fr}}
+  .proj{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;transition:transform .18s,box-shadow .18s}
+  .proj:hover{transform:translateY(-4px);box-shadow:0 16px 38px rgba(14,27,42,.10)}
+  .proj .thumb{aspect-ratio:16/10;background:var(--ink);position:relative;overflow:hidden;display:grid;place-items:center}
+  .proj .thumb .pname{font-family:'Archivo';font-weight:800;color:#fff;font-size:20px;text-align:center;padding:0 16px;z-index:2}
+  .proj .body{padding:18px 20px 22px}
+  .proj .loc{font-family:'Space Mono';font-size:11px;color:var(--steel);letter-spacing:.08em}
+  .proj h3{font-size:18px;margin-top:5px}
+  .proj .svcs{margin-top:12px;display:flex;flex-wrap:wrap;gap:6px}
+  .pill{font-size:11.5px;font-weight:600;background:var(--glacier);color:var(--slate);padding:4px 9px;border-radius:20px}
+
+  /* ---------- TESTIMONIALS ---------- */
+  .tg{grid-template-columns:repeat(3,1fr);margin-top:40px}
+  @media(max-width:820px){.tg{grid-template-columns:1fr}}
+  .quote{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:26px}
+  .quote p{font-size:15.5px;color:var(--slate)}
+  .quote .who{margin-top:16px;font-weight:700;font-family:'Archivo'}
+  .quote .who span{display:block;font-family:'Space Mono';font-size:11px;color:var(--steel);font-weight:400;letter-spacing:.06em}
+  .stars{color:var(--larch);font-size:14px;letter-spacing:2px;margin-bottom:12px}
+
+  /* ---------- CONTACT ---------- */
+  .contact{background:var(--ink);color:#fff}
+  .contact .blk-head h2{color:#fff}.contact .blk-head p{color:var(--glacier)}
+  .contact .eyebrow{color:var(--larch)}.contact .eyebrow::before{background:var(--larch)}
+  .form{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.14);border-radius:var(--r);padding:26px;margin-top:30px;max-width:640px}
+  .field{margin-bottom:16px}
+  .field label{display:block;font-size:12.5px;font-family:'Space Mono';letter-spacing:.06em;color:var(--glacier);margin-bottom:6px}
+  .field input,.field select,.field textarea{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);border-radius:9px;padding:12px 13px;color:#fff;font-family:inherit;font-size:15px}
+  .field input::placeholder,.field textarea::placeholder{color:rgba(220,230,236,.45)}
+  .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--larch);outline:none}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:520px){.two{grid-template-columns:1fr}}
+  .form-msg{color:var(--larch);font-weight:700;margin-top:8px;min-height:20px}
+
+  /* ---------- FOOTER ---------- */
+  footer.ft{background:#0a141f;color:var(--glacier);padding:54px 0 0}
+  .ft-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:32px}
+  @media(max-width:760px){.ft-grid{grid-template-columns:1fr}}
+  .ft h5{font-family:'Space Mono';font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--slate-2);margin-bottom:14px}
+  .ft a{display:block;color:var(--glacier);font-size:14.5px;padding:5px 0;opacity:.85}
+  .ft a:hover{opacity:1;color:var(--larch)}
+  .ticker{margin-top:46px;border-top:1px solid rgba(255,255,255,.08);overflow:hidden;white-space:nowrap;padding:13px 0}
+  .ticker-track{display:inline-block;animation:scroll 26s linear infinite;font-family:'Space Mono';font-size:12px;letter-spacing:.1em;color:var(--slate-2)}
+  .ticker-track b{color:var(--larch);font-weight:700}
+  @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  .ft-bottom{display:flex;justify-content:space-between;align-items:center;padding:16px 0;font-size:12.5px;color:var(--slate-2);flex-wrap:wrap;gap:8px}
+  .admin-dot{cursor:pointer;color:#0a141f;user-select:none;font-weight:900;padding:0 6px;font-size:18px;line-height:1}
+  .admin-dot:hover{color:var(--larch)}
+
+  /* ---------- ROUTING ---------- */
+  .page{display:none}.page.active{display:block}
+
+  /* ---------- CITY PAGE ---------- */
+  .city-hero{background:var(--ink);color:#fff;position:relative;overflow:hidden}
+  .city-hero-in{position:relative;z-index:2;padding:64px 0 54px}
+  .demo-banner{background:var(--larch);color:var(--ink);text-align:center;font-size:13px;font-weight:600;padding:9px 14px;font-family:'Space Mono';letter-spacing:.03em}
+  .city-hero h1{font-size:clamp(30px,5vw,52px);font-weight:800;color:#fff;max-width:16ch}
+  .city-hero h1 em{font-style:normal;color:var(--larch)}
+  .city-body{display:grid;grid-template-columns:1.6fr 1fr;gap:42px;padding:70px 0}
+  @media(max-width:820px){.city-body{grid-template-columns:1fr}}
+  .city-body h2{font-size:26px;margin:26px 0 12px}
+  .city-body p{color:var(--slate);margin-bottom:14px}
+  .local-box{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:22px;position:sticky;top:84px}
+  .local-box h4{font-family:'Space Mono';font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--steel);margin-bottom:12px}
+  .local-box .lm{display:flex;gap:9px;padding:8px 0;border-top:1px solid var(--line);font-size:14px}
+  .schema-note{margin-top:18px;font-family:'Space Mono';font-size:11px;color:var(--slate-2);background:var(--glacier);padding:12px;border-radius:8px;line-height:1.6}
+
+  /* ---------- ADMIN ---------- */
+  #adminLogin,#adminApp{display:none}
+  .admin-screen{position:fixed;inset:0;z-index:200;background:var(--ink);display:none;overflow:auto}
+  .admin-screen.show{display:block}
+  .login-card{max-width:380px;margin:14vh auto;background:var(--paper);border-radius:16px;padding:34px}
+  .login-card .mark{margin:0 auto 14px}
+  .login-card h2{text-align:center;font-size:22px}
+  .login-card p{text-align:center;color:var(--slate);font-size:14px;margin:6px 0 20px}
+  .login-card input{width:100%;padding:12px 13px;border:1.5px solid var(--line);border-radius:9px;font-size:15px;font-family:inherit;margin-bottom:12px}
+  .login-card .hint{font-family:'Space Mono';font-size:11px;color:var(--slate-2);text-align:center;margin-top:14px}
+  .login-err{color:#c0392b;font-size:13px;text-align:center;min-height:18px}
+
+  .admin-top{background:var(--paper);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+  .admin-top-in{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:60px;padding:0 22px}
+  .admin-badge{background:var(--ink);color:var(--larch);font-family:'Space Mono';font-size:11px;letter-spacing:.12em;padding:5px 10px;border-radius:6px;text-transform:uppercase}
+  .admin-shell{max-width:1200px;margin:0 auto;padding:28px 22px 80px}
+  .admin-tabs{display:flex;gap:4px;border-bottom:2px solid var(--line);margin-bottom:26px;flex-wrap:wrap}
+  .atab{padding:11px 18px;font-weight:600;font-size:14.5px;color:var(--slate-2);background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-2px;cursor:pointer;font-family:inherit}
+  .atab.active{color:var(--ink);border-bottom-color:var(--larch)}
+  .apanel{display:none}.apanel.active{display:block}
+  .stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:30px}
+  @media(max-width:760px){.stat-row{grid-template-columns:1fr 1fr}}
+  .astat{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px}
+  .astat .l{font-family:'Space Mono';font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--slate-2)}
+  .astat .v{font-family:'Archivo';font-weight:800;font-size:30px;margin-top:6px}
+  .astat .v small{font-size:13px;color:var(--steel);font-weight:600;font-family:'Hanken Grotesk'}
+  .atable{width:100%;border-collapse:collapse;background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:14px}
+  .atable th{background:var(--snow);text-align:left;padding:11px 14px;font-family:'Space Mono';font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--slate-2)}
+  .atable td{padding:12px 14px;border-top:1px solid var(--line)}
+  .atable tr:hover td{background:#fafcfd}
+  .a-form{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:22px;margin-bottom:24px}
+  .a-form h3{font-size:16px;margin-bottom:14px}
+  .a-form .row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+  @media(max-width:600px){.a-form .row{grid-template-columns:1fr}}
+  .a-form label{display:block;font-size:12px;font-family:'Space Mono';color:var(--slate-2);margin-bottom:5px;letter-spacing:.04em}
+  .a-form input,.a-form textarea{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:8px;font-family:inherit;font-size:14px}
+  .a-form input:focus,.a-form textarea:focus{border-color:var(--larch);outline:none}
+  .live-chip{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-family:'Space Mono';color:#1c7a4a}
+  .live-chip::before{content:"";width:7px;height:7px;border-radius:50%;background:#1c9c57;box-shadow:0 0 0 3px rgba(28,156,87,.18)}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:13px 20px;border-radius:10px;font-size:14px;font-weight:600;opacity:0;pointer-events:none;transition:.25s;z-index:300}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .toast b{color:var(--larch)}
+  .open-link{font-size:12.5px;color:var(--steel);font-weight:700;cursor:pointer}
+  .open-link:hover{color:var(--larch-deep)}
+</style>
+</head>
+<body>
+
+<!-- ============ PUBLIC SITE ============ -->
+<div id="site">
+<header class="nav">
+  <div class="wrap nav-in">
+    <div class="brand" onclick="go('home')">
+      <svg class="mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+        <rect width="40" height="40" rx="9" fill="#0E1B2A"/>
+        <path d="M7 29 L16 14 L21 22 L26 12 L33 29 Z" fill="#E29B33"/>
+        <path d="M16 14 L19 19 L17 21 Z" fill="#fff" opacity=".85"/>
+        <path d="M26 12 L29 19 L24.5 19 Z" fill="#fff" opacity=".85"/>
+      </svg>
+      <div><b>Great Escape</b><span>Web &amp; Business · ID</span></div>
+    </div>
+    <nav class="links">
+      <a onclick="go('home')">Home</a>
+      <a onclick="go('city')">Web Development</a>
+      <a href="#instore">In-Store Ads</a>
+      <a href="#offer">SEO</a>
+      <a onclick="go('portfolio')">Work</a>
+      <a href="#contact">About</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-ghost" href="#contact">Talk to Tyler</a>
+      <a class="btn btn-gold" href="#contact">Free Consultation</a>
+      <button class="menu-btn" onclick="document.querySelector('.links').style.display='flex';this.remove()">Menu</button>
+    </div>
+  </div>
+</header>
+
+<!-- ===== HOME ===== -->
+<div class="page active" id="page-home">
+  <section class="hero">
+    <svg class="hero-topo" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <g fill="none" stroke="#E29B33" stroke-width="1">
+        <ellipse cx="820" cy="300" rx="120" ry="78" opacity=".55"/>
+        <ellipse cx="820" cy="300" rx="200" ry="130" opacity=".42"/>
+        <ellipse cx="820" cy="300" rx="290" ry="188" opacity=".30"/>
+        <ellipse cx="820" cy="300" rx="390" ry="250" opacity=".20"/>
+        <ellipse cx="820" cy="300" rx="500" ry="320" opacity=".12"/>
+        <ellipse cx="820" cy="300" rx="620" ry="395" opacity=".07"/>
+      </g>
+      <g fill="none" stroke="#4C8597" stroke-width="1" opacity=".5">
+        <ellipse cx="180" cy="120" rx="90" ry="58"/>
+        <ellipse cx="180" cy="120" rx="160" ry="104" opacity=".6"/>
+        <ellipse cx="180" cy="120" rx="240" ry="156" opacity=".35"/>
+      </g>
+      <circle cx="820" cy="300" r="5" fill="#E29B33"/>
+    </svg>
+    <div class="wrap hero-in">
+      <span class="eyebrow">48.30°N 116.55°W · North Idaho</span>
+      <h1>Rugged digital infrastructure that gets your business <em>found.</em></h1>
+      <p class="sub">Websites, local SEO, and in-store advertising for North Idaho small businesses — built to put you at the top of the map and keep you booked. Small biz helping small biz.</p>
+      <div class="hero-cta">
+        <a class="btn btn-gold" href="#contact">Get a Free Consultation</a>
+        <a class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.3)" onclick="go('portfolio')">See Our Work</a>
+      </div>
+      <div class="summit">
+        <div class="stat"><div class="num">30k–40k</div><div class="lbl">local shoppers reached / mo, per display</div></div>
+        <div class="stat"><div class="num">8+</div><div class="lbl">North Idaho towns we rank clients in</div></div>
+        <div class="stat"><div class="num">$1,500</div><div class="lbl">MRR managed for local businesses</div></div>
+      </div>
+    </div>
+    <div class="hero-coords">ELEV 2,188 FT · SANDPOINT QUAD</div>
+  </section>
+
+  <div class="clients">
+    <div class="wrap clients-row" id="clientRow">
+      <span class="lab">Trusted by local operators —</span>
+    </div>
+  </div>
+
+  <!-- OFFERINGS -->
+  <section class="blk" id="offer">
+    <div class="wrap">
+      <div class="blk-head">
+        <span class="eyebrow">What we do</span>
+        <h2>Everything your digital presence needs, in one place.</h2>
+        <p>From the first line of code to the checkout-lane screen, we build and manage the whole stack so you can run your business instead of your website.</p>
+      </div>
+      <div class="grid off-grid" id="offerGrid"></div>
+    </div>
+  </section>
+
+  <!-- ELEVATION -->
+  <section class="blk elev">
+    <div class="wrap">
+      <div class="blk-head">
+        <span class="eyebrow">Ranking = Elevation</span>
+        <h2>Get on the map, or get lost below the tree line.</h2>
+        <p>Local SEO is the difference between being the business neighbors find first and the one buried on page three. Here's the view from each altitude.</p>
+      </div>
+      <div class="elev-cols">
+        <div class="elev-col summit-col">
+          <h4>At the Summit</h4>
+          <div class="alt">// with Great Escape · elev 7,000+ ft</div>
+          <div class="elev-li"><span class="dot">✓</span><div>Accurate, professional presence neighbors actually trust</div></div>
+          <div class="elev-li"><span class="dot">✓</span><div>Top local rankings on Google in your service area</div></div>
+          <div class="elev-li"><span class="dot">✓</span><div>Steady stream of traffic, calls, and booked jobs</div></div>
+          <div class="elev-li"><span class="dot">✓</span><div>Every digital asset managed in one dashboard</div></div>
+        </div>
+        <div class="elev-col base-col">
+          <h4>Down at Base</h4>
+          <div class="alt">// without · elev 0 ft</div>
+          <div class="elev-li"><span class="dot">×</span><div>Outdated site that quietly costs you credibility</div></div>
+          <div class="elev-li"><span class="dot">×</span><div>Little or no ranking — invisible in local search</div></div>
+          <div class="elev-li"><span class="dot">×</span><div>Phone stays quiet; competitors get the call</div></div>
+          <div class="elev-li"><span class="dot">×</span><div>Logins and assets scattered across ten platforms</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IN-STORE -->
+  <section class="blk" id="instore">
+    <div class="wrap">
+      <div class="blk-head">
+        <span class="eyebrow">In-Store Digital Displays</span>
+        <h2>Turn a checkout-lane wait into a win.</h2>
+        <p>Our screens sit at eye level in high-traffic checkout lanes — motion and color that turn idle minutes into brand recall, right where your neighbors already shop.</p>
+      </div>
+      <div class="instore-grid">
+        <div>
+          <div class="instore-li"><span class="k">DWELL</span><div><b>Unbeatable dwell time.</b> Unlike an online ad that's gone in a second, your message sits exactly where customers wait.</div></div>
+          <div class="instore-li"><span class="k">FREQ</span><div><b>High-frequency repetition.</b> Locals hit their grocery store 2–3× a week — so you're who they remember when they need a pro.</div></div>
+          <div class="instore-li"><span class="k">REAL</span><div><b>Verified local traffic.</b> 30k–40k real shoppers a month per location. No bots, no fake clicks — just neighbors.</div></div>
+          <div style="margin-top:22px"><a class="btn btn-dark" href="#contact">Choose Your Plan</a></div>
+        </div>
+        <div class="screen">
+          <svg viewBox="0 0 200 120" style="position:absolute;inset:0;width:100%;height:100%;opacity:.4" aria-hidden="true">
+            <g fill="none" stroke="#E29B33" stroke-width="1">
+              <ellipse cx="100" cy="160" rx="60" ry="40"/><ellipse cx="100" cy="160" rx="110" ry="74" opacity=".6"/><ellipse cx="100" cy="160" rx="160" ry="108" opacity=".35"/>
+            </g>
+          </svg>
+          <div class="pin" style="top:30%;left:62%"></div>
+          <div style="position:relative;z-index:2">
+            <div class="mono" style="color:var(--larch);font-size:11px;letter-spacing:.1em">NOW SHOWING · LANE 4</div>
+          </div>
+          <div style="position:relative;z-index:2">
+            <div style="font-family:'Archivo';font-weight:800;color:#fff;font-size:22px;line-height:1.1">YOUR BUSINESS<br>HERE.</div>
+            <div style="color:var(--glacier);font-size:12px;margin-top:8px">Eye-level. High-traffic. Unmissable.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PORTFOLIO PREVIEW -->
+  <section class="blk" style="background:var(--paper);border-top:1px solid var(--line)">
+    <div class="wrap">
+      <div class="blk-head" style="display:flex;justify-content:space-between;align-items:flex-end;max-width:100%;flex-wrap:wrap;gap:14px">
+        <div>
+          <span class="eyebrow">Selected work</span>
+          <h2>Builds we're proud of.</h2>
+        </div>
+        <a class="open-link" onclick="go('portfolio')">View all projects →</a>
+      </div>
+      <div class="grid port-grid" id="portPreview"></div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="blk">
+    <div class="wrap">
+      <div class="blk-head"><span class="eyebrow">From the field</span><h2>What clients say.</h2></div>
+      <div class="grid tg" id="testGrid"></div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="blk contact" id="contact">
+    <div class="wrap">
+      <div class="blk-head">
+        <span class="eyebrow">Reach out</span>
+        <h2>Let's build something lasting.</h2>
+        <p>Based in Athol, ID — serving North Idaho, Eastern Washington, and anywhere else you may be. Tell us what you need and Tyler will get back fast.</p>
+      </div>
+      <div class="form">
+        <div class="two">
+          <div class="field"><label>First name *</label><input id="f-name" placeholder="Jordan"></div>
+          <div class="field"><label>Company</label><input id="f-co" placeholder="Your business"></div>
+        </div>
+        <div class="two">
+          <div class="field"><label>Email *</label><input id="f-email" placeholder="you@email.com"></div>
+          <div class="field"><label>Phone</label><input id="f-phone" placeholder="(208) 555-0142"></div>
+        </div>
+        <div class="field"><label>What are you looking for?</label><textarea id="f-msg" rows="3" placeholder="Website rebuild, local SEO, in-store screens…"></textarea></div>
+        <button class="btn btn-gold" onclick="submitLead()">Send to Great Escape</button>
+        <div class="form-msg" id="formMsg"></div>
+      </div>
+    </div>
+  </section>
+</div><!-- /home -->
+
+<!-- ===== CITY (programmatic SEO sample) ===== -->
+<div class="page" id="page-city">
+  <div class="demo-banner">⛰ DEMO · This page auto-generates from the “Cities” table in your admin. Add a town → a page like this goes live + enters the sitemap. <a onclick="openAdmin()" style="text-decoration:underline;cursor:pointer">See the engine →</a></div>
+  <section class="city-hero">
+    <svg class="hero-topo" viewBox="0 0 1200 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <g fill="none" stroke="#E29B33" stroke-width="1">
+        <ellipse cx="900" cy="200" rx="120" ry="78" opacity=".5"/><ellipse cx="900" cy="200" rx="220" ry="140" opacity=".3"/><ellipse cx="900" cy="200" rx="340" ry="210" opacity=".16"/>
+      </g>
+    </svg>
+    <div class="wrap city-hero-in">
+      <span class="eyebrow" id="cityCoord">48.27°N 116.55°W</span>
+      <h1>Website Development &amp; Local SEO in <em id="cityName">Sandpoint</em>, Idaho</h1>
+    </div>
+  </section>
+  <div class="wrap city-body">
+    <div>
+      <h2 id="cityH2">Built for Sandpoint businesses</h2>
+      <p id="cityIntro"></p>
+      <p id="cityIntro2"></p>
+      <h2>What we do for local businesses here</h2>
+      <p>Custom websites, Google Business Profile optimization, local citations, and keyword-targeted pages that help <span id="cityName3">Sandpoint</span> customers find you first — not your competitor three towns over.</p>
+      <div class="quote" style="margin-top:18px">
+        <div class="stars">★★★★★</div>
+        <p id="cityQuote"></p>
+        <div class="who" id="cityWho"></div>
+      </div>
+    </div>
+    <aside>
+      <div class="local-box">
+        <h4>Serving the area</h4>
+        <div id="cityLandmarks"></div>
+        <div class="schema-note" id="schemaNote"></div>
+        <a class="btn btn-gold" href="#contact" style="margin-top:16px;width:100%;justify-content:center" onclick="go('home')">Free Consultation</a>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- ===== PORTFOLIO ===== -->
+<div class="page" id="page-portfolio">
+  <section class="blk" style="background:var(--ink);color:#fff;padding-bottom:40px">
+    <div class="wrap">
+      <span class="eyebrow" style="color:var(--larch)">Our work</span>
+      <h2 style="color:#fff;font-size:clamp(30px,5vw,48px);margin-top:12px">North Idaho businesses we've put on the map.</h2>
+      <p style="color:var(--glacier);max-width:54ch;margin-top:12px">Every build managed from one dashboard — and every card here is editable from your admin portal.</p>
+    </div>
+  </section>
+  <section class="blk" style="padding-top:48px">
+    <div class="wrap"><div class="grid port-grid" id="portFull"></div></div>
+  </section>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="ft">
+  <div class="wrap">
+    <div class="ft-grid">
+      <div>
+        <div class="brand" style="margin-bottom:14px">
+          <svg class="mark" viewBox="0 0 40 40"><rect width="40" height="40" rx="9" fill="#13243a"/><path d="M7 29 L16 14 L21 22 L26 12 L33 29 Z" fill="#E29B33"/></svg>
+          <div><b style="color:#fff">Great Escape</b><span>Web &amp; Business Services LLC</span></div>
+        </div>
+        <p style="font-size:14px;max-width:36ch;opacity:.8">Get found online, stay booked, and increase revenue. Based in Athol, ID — serving North Idaho &amp; Eastern Washington.</p>
+        <p style="font-size:12.5px;margin-top:14px;opacity:.6;font-family:'Space Mono'">P.O. Box 913, Athol, ID 83801</p>
+      </div>
+      <div>
+        <h5>Directory</h5>
+        <a onclick="go('home')">Home</a>
+        <a onclick="go('city')">Web Development</a>
+        <a href="#instore" onclick="go('home')">In-Store Ads</a>
+        <a href="#offer" onclick="go('home')">SEO Packages</a>
+        <a onclick="go('portfolio')">Our Work</a>
+        <a href="#contact" onclick="go('home')">Contact</a>
+      </div>
+      <div>
+        <h5>Connect</h5>
+        <a href="#">Facebook</a>
+        <a href="#">Instagram</a>
+        <a href="#contact" onclick="go('home')">Free Consultation</a>
+      </div>
+    </div>
+    <div class="ticker">
+      <span class="ticker-track">WEBSITE DESIGNED &amp; BUILT BY <b>GREAT ESCAPE WEB &amp; BUSINESS SERVICES LLC</b> &nbsp;·&nbsp; NORTH IDAHO &nbsp;·&nbsp; WEBSITE DESIGNED &amp; BUILT BY <b>GREAT ESCAPE WEB &amp; BUSINESS SERVICES LLC</b> &nbsp;·&nbsp; NORTH IDAHO &nbsp;·&nbsp; </span>
+    </div>
+    <div class="ft-bottom">
+      <span>© 2026 Great Escape Web &amp; Business Services LLC</span>
+      <span>Powered by Great Escape<span class="admin-dot" title="" onclick="openAdmin()">.</span></span>
+    </div>
+  </div>
+</footer>
+</div><!-- /site -->
+
+<!-- ============ ADMIN ============ -->
+<div class="admin-screen" id="adminScreen">
+  <!-- LOGIN -->
+  <div id="adminLogin">
+    <div class="login-card">
+      <svg class="mark" viewBox="0 0 40 40" style="width:44px;height:44px"><rect width="40" height="40" rx="9" fill="#0E1B2A"/><path d="M7 29 L16 14 L21 22 L26 12 L33 29 Z" fill="#E29B33"/></svg>
+      <h2>Site Control</h2>
+      <p>Great Escape admin — manage every system on the site.</p>
+      <input id="pw" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()">
+      <button class="btn btn-dark" style="width:100%;justify-content:center" onclick="doLogin()">Enter dashboard</button>
+      <div class="login-err" id="loginErr"></div>
+      <div class="hint">demo password: <b>greatescape</b> &nbsp;·&nbsp; <span class="open-link" onclick="closeAdmin()">← back to site</span></div>
+    </div>
+  </div>
+
+  <!-- APP -->
+  <div id="adminApp">
+    <div class="admin-top">
+      <div class="admin-top-in">
+        <div class="brand">
+          <svg class="mark" viewBox="0 0 40 40"><rect width="40" height="40" rx="9" fill="#0E1B2A"/><path d="M7 29 L16 14 L21 22 L26 12 L33 29 Z" fill="#E29B33"/></svg>
+          <div><b>Site Control</b><span>greatescapewebservices.com</span></div>
+          <span class="admin-badge" style="margin-left:8px">Admin</span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <a class="open-link" onclick="closeAdmin()">View live site ↗</a>
+          <button class="btn btn-ghost" style="padding:8px 14px" onclick="closeAdmin()">Log out</button>
+        </div>
+      </div>
+    </div>
+    <div class="admin-shell">
+      <div class="admin-tabs">
+        <button class="atab active" onclick="atab('overview',this)">Overview</button>
+        <button class="atab" onclick="atab('cities',this)">Cities (SEO Engine)</button>
+        <button class="atab" onclick="atab('portfolio',this)">Portfolio</button>
+        <button class="atab" onclick="atab('blog',this)">Blog</button>
+        <button class="atab" onclick="atab('leads',this)">Leads</button>
+        <button class="atab" onclick="atab('testimonials',this)">Testimonials</button>
+      </div>
+
+      <!-- OVERVIEW -->
+      <div class="apanel active" id="ap-overview">
+        <div class="stat-row" id="statRow"></div>
+        <div class="a-form">
+          <h3>How this works</h3>
+          <p style="font-size:14.5px;color:var(--slate)">This is your single control panel. Add a city and a fully-optimized local SEO page generates itself and enters your sitemap. Add a project and it appears in your portfolio. Leads from the contact form land in the Leads tab with an email notification. Nothing here requires touching code.</p>
+        </div>
+      </div>
+
+      <!-- CITIES -->
+      <div class="apanel" id="ap-cities">
+        <div class="a-form">
+          <h3>Add a city <span class="live-chip" style="margin-left:8px">auto-publishes a live SEO page</span></h3>
+          <div class="row">
+            <div><label>City name</label><input id="c-name" placeholder="Priest River"></div>
+            <div><label>County</label><input id="c-county" placeholder="Bonner County"></div>
+          </div>
+          <div class="row">
+            <div><label>Coordinates</label><input id="c-coord" placeholder="48.18°N 116.91°W"></div>
+            <div><label>Local landmarks (comma separated)</label><input id="c-land" placeholder="Priest River, Mudhole Smith Park"></div>
+          </div>
+          <div style="margin-bottom:12px"><label style="display:block;font-size:12px;font-family:'Space Mono';color:var(--slate-2);margin-bottom:5px">Unique local intro (this is what keeps Google happy — make it real)</label><textarea id="c-intro" rows="2" placeholder="A sentence or two of genuine local context — the industries here, the vibe, why local businesses need to be found…"></textarea></div>
+          <button class="btn btn-gold" onclick="addCity()">Publish city page</button>
+        </div>
+        <table class="atable"><thead><tr><th>City</th><th>County</th><th>URL</th><th>Status</th><th></th></tr></thead><tbody id="cityRows"></tbody></table>
+      </div>
+
+      <!-- PORTFOLIO -->
+      <div class="apanel" id="ap-portfolio">
+        <div class="a-form">
+          <h3>Add a project</h3>
+          <div class="row">
+            <div><label>Client / project</label><input id="p-name" placeholder="Premier Tire LLC"></div>
+            <div><label>Location</label><input id="p-loc" placeholder="Sandpoint, ID"></div>
+          </div>
+          <div style="margin-bottom:12px"><label style="display:block;font-size:12px;font-family:'Space Mono';color:var(--slate-2);margin-bottom:5px">Services (comma separated)</label><input id="p-svcs" placeholder="Web Design, Local SEO, Lead Engine"></div>
+          <button class="btn btn-gold" onclick="addProject()">Add to portfolio</button>
+        </div>
+        <table class="atable"><thead><tr><th>Project</th><th>Location</th><th>Services</th><th></th></tr></thead><tbody id="projRows"></tbody></table>
+      </div>
+
+      <!-- BLOG -->
+      <div class="apanel" id="ap-blog">
+        <div class="a-form">
+          <h3>New post</h3>
+          <div style="margin-bottom:12px"><label>Title</label><input id="b-title" placeholder="5 ways North Idaho trades win on Google"></div>
+          <button class="btn btn-gold" onclick="addPost()">Publish post</button>
+        </div>
+        <table class="atable"><thead><tr><th>Title</th><th>Published</th><th>Status</th></tr></thead><tbody id="blogRows"></tbody></table>
+      </div>
+
+      <!-- LEADS -->
+      <div class="apanel" id="ap-leads">
+        <table class="atable"><thead><tr><th>Name</th><th>Company</th><th>Email</th><th>Looking for</th></tr></thead><tbody id="leadRows"></tbody></table>
+        <p id="noLeads" style="color:var(--slate-2);padding:20px;font-size:14px">No leads yet. Submit the contact form on the live site to watch one land here.</p>
+      </div>
+
+      <!-- TESTIMONIALS -->
+      <div class="apanel" id="ap-testimonials">
+        <table class="atable"><thead><tr><th>Quote</th><th>Client</th></tr></thead><tbody id="testRows"></tbody></table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------------- DATA ---------------- */
+let cities = [
+  {name:"Sandpoint", county:"Bonner County", coord:"48.27°N 116.55°W", landmarks:["Lake Pend Oreille","Schweitzer Mountain","Downtown Cedar St."], intro:"Sandpoint runs on tourism, the trades, and a tight-knit downtown — which means being found by both visitors and locals matters. We build sites that rank for the searches your Sandpoint customers actually type.", quote:"He dialed in my website and I've already got lots more organic traffic.", who:"Selkirk · Sandpoint"},
+  {name:"Coeur d'Alene", county:"Kootenai County", coord:"47.68°N 116.78°W", landmarks:["Lake Coeur d'Alene","Tubbs Hill","Sherman Ave."], intro:"Coeur d'Alene is the busiest market in the panhandle and the most competitive. Standing out here takes a fast, professional site plus disciplined local SEO — exactly what we do.", quote:"Completely elevated my social presence and they keep evolving my site.", who:"Paul · Spokane area"},
+  {name:"Athol", county:"Kootenai County", coord:"47.95°N 116.70°W", landmarks:["Silverwood Theme Park","Farragut State Park"], intro:"Athol is small but growing fast, and businesses here can own their local search before the competition wakes up to it. We help you plant that flag early.", quote:"Fair, honest pricing and real care for my small business.", who:"Sarah · Sandpoint"},
+  {name:"Hayden", county:"Kootenai County", coord:"47.77°N 116.79°W", landmarks:["Hayden Lake","Honeysuckle Beach"], intro:"Hayden's lakeside community supports a steady base of service businesses. We make sure yours is the one neighbors find first.", quote:"Very responsive — within minutes — and great to work with.", who:"Selkirk · Sandpoint"},
+  {name:"Post Falls", county:"Kootenai County", coord:"47.71°N 116.95°W", landmarks:["Falls Park","Q'emiln Park"], intro:"Post Falls sits right on the Washington line, so local visibility on both sides of the border pays off. We build for that border-town reach.", quote:"They stay connected and help my marketing evolve.", who:"Paul · Spokane area"},
+  {name:"Bonners Ferry", county:"Boundary County", coord:"48.69°N 116.32°W", landmarks:["Kootenai River","Kootenai Falls"], intro:"Way up north, Bonners Ferry businesses serve a loyal rural base. A clean site and solid local SEO go a long way where word-of-mouth already runs strong.", quote:"Grateful for the help with my small business.", who:"Sarah · Sandpoint"}
+];
+
+let projects = [
+  {name:"Premier Tire LLC", loc:"Sandpoint, ID", svcs:["Web Design","Lead Engine","Local SEO"]},
+  {name:"Blue Collar Company", loc:"5-State Build", svcs:["Enterprise CMS","Vendor Map","Video Shoot"]},
+  {name:"Panhandle Peak", loc:"North Idaho", svcs:["Web Design","Branding"]},
+  {name:"North Idaho Food Trucks", loc:"North Idaho", svcs:["Directory","SEO"]},
+  {name:"Copeland's Quality Installations", loc:"North Idaho", svcs:["Web Design","SEO"]},
+  {name:"Kevin Hatcher Excavation", loc:"North Idaho", svcs:["Web Design","Lead Gen"]},
+  {name:"Flow Motion Personal Training", loc:"North Idaho", svcs:["Web Design","Booking"]},
+  {name:"Precision Panels", loc:"North Idaho", svcs:["Web Design"]},
+  {name:"Treasure Valley Food Trucks", loc:"Treasure Valley, ID", svcs:["Directory","SEO"]},
+  {name:"The Quilted Bison", loc:"North Idaho", svcs:["E-commerce","Web Design"]}
+];
+
+let testimonials = [
+  {q:"Amazing services — Tyler was beyond exceptional. Very responsive, within minutes. He dialed in my website and I've already got lots more organic traffic.", who:"Selkirk", loc:"Sandpoint"},
+  {q:"Tyler helped me transfer my website and set up a newsletter. Grateful for his help with my small business — fair and honest pricing. Small biz helping small biz.", who:"Sarah", loc:"Sandpoint"},
+  {q:"Great Escape has done wonders for my small business! I've completely elevated my social presence, and they stay connected and help my site evolve.", who:"Paul", loc:"Spokane"}
+];
+
+let leads = [];
+let posts = [
+  {title:"Why local SEO beats paid ads for North Idaho trades", date:"2026-06-12", status:"Published"},
+  {title:"Google Business Profile: the 20-minute setup that ranks", date:"2026-05-28", status:"Published"}
+];
+
+const offerings = [
+  {t:"Custom Web Development",d:"Fast, professional websites tailored to your business — built to convert, not just sit there.",tag:"BUILD"},
+  {t:"Local SEO",d:"Rank in your service area with optimized profiles, citations, and keyword-targeted local pages.",tag:"RANK"},
+  {t:"In-Store Digital Displays",d:"Eye-level screens in high-traffic checkout lanes that turn waits into brand recall.",tag:"REACH"},
+  {t:"Content & Copywriting",d:"Words that sound like you and move people to call, book, or buy.",tag:"VOICE"},
+  {t:"Website Maintenance",d:"Updates, security, and support so your site stays fast, safe, and current.",tag:"KEEP"},
+  {t:"E-commerce",d:"Clean online stores that make selling — and managing it — painless.",tag:"SELL"}
+];
+
+/* ---------------- ROUTING ---------------- */
+function go(p){
+  document.querySelectorAll('.page').forEach(el=>el.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  window.scrollTo({top:0,behavior:'instant'in document.documentElement.style?'instant':'auto'});
+  if(p==='city') loadCity(cities[0]);
+}
+/* anchor links inside SPA: ensure home shows first */
+document.addEventListener('click',e=>{
+  const a=e.target.closest('a[href^="#"]');
+  if(a){const home=document.getElementById('page-home');if(!home.classList.contains('active')){go('home');}}
+});
+
+/* ---------------- RENDER PUBLIC ---------------- */
+function renderClients(){
+  const row=document.getElementById('clientRow');
+  row.querySelectorAll('.client-chip').forEach(e=>e.remove());
+  projects.slice(0,7).forEach(p=>{
+    const s=document.createElement('span');s.className='client-chip';s.textContent=p.name;row.appendChild(s);
+  });
+}
+function renderOfferings(){
+  document.getElementById('offerGrid').innerHTML = offerings.map(o=>`
+    <div class="card"><span class="tag">${o.tag}</span>
+      <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 18 L9 9 L13 14 L18 6 L21 18 Z"/></svg></div>
+      <h3>${o.t}</h3><p>${o.d}</p></div>`).join('');
+}
+function projCard(p){
+  return `<div class="proj">
+    <div class="thumb">
+      <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.5" viewBox="0 0 200 120"><g fill="none" stroke="#E29B33" stroke-width="1"><ellipse cx="100" cy="60" rx="40" ry="26"/><ellipse cx="100" cy="60" rx="72" ry="46" opacity=".6"/><ellipse cx="100" cy="60" rx="104" ry="66" opacity=".3"/></g></svg>
+      <div class="pname">${p.name}</div>
+    </div>
+    <div class="body"><div class="loc">${p.loc}</div>
+      <div class="svcs">${p.svcs.map(s=>`<span class="pill">${s}</span>`).join('')}</div>
+    </div></div>`;
+}
+function renderPortfolio(){
+  document.getElementById('portPreview').innerHTML = projects.slice(0,6).map(projCard).join('');
+  document.getElementById('portFull').innerHTML = projects.map(projCard).join('');
+}
+function renderTest(){
+  document.getElementById('testGrid').innerHTML = testimonials.map(t=>`
+    <div class="quote"><div class="stars">★★★★★</div><p>${t.q}</p>
+      <div class="who">${t.who}<span>${t.loc}, ID</span></div></div>`).join('');
+}
+function loadCity(c){
+  document.getElementById('cityName').textContent=c.name;
+  document.getElementById('cityName3').textContent=c.name;
+  document.getElementById('cityCoord').textContent=c.coord;
+  document.getElementById('cityH2').textContent=`Built for ${c.name} businesses`;
+  document.getElementById('cityIntro').textContent=c.intro;
+  document.getElementById('cityIntro2').textContent=`Whether you're in the trades, hospitality, or a professional office, we make sure ${c.name} customers find you on Google before they find anyone else.`;
+  document.getElementById('cityQuote').textContent='“'+c.quote+'”';
+  document.getElementById('cityWho').textContent=c.who;
+  document.getElementById('cityLandmarks').innerHTML=c.landmarks.map(l=>`<div class="lm"><span style="color:var(--larch)">▲</span>${l}</div>`).join('');
+  document.getElementById('schemaNote').textContent=`{ LocalBusiness schema · ${c.name}, ${c.county} · auto-injected · /website-development/${c.name.toLowerCase().replace(/[^a-z]+/g,'-')} }`;
+}
+
+/* ---------------- LEAD FORM ---------------- */
+function submitLead(){
+  const name=document.getElementById('f-name').value.trim();
+  const email=document.getElementById('f-email').value.trim();
+  const msg=document.getElementById('formMsg');
+  if(!name||!email){msg.textContent='Please add at least your name and email.';return;}
+  leads.unshift({name, company:document.getElementById('f-co').value.trim()||'—', email, looking:document.getElementById('f-msg').value.trim()||'—'});
+  msg.textContent='✓ Sent! Tyler will be in touch shortly. (Lead saved to your admin → Leads.)';
+  ['f-name','f-co','f-email','f-phone','f-msg'].forEach(id=>document.getElementById(id).value='');
+  renderLeads();renderStats();
+  toast('New lead captured — check <b>Leads</b> in admin');
+}
+
+/* ---------------- ADMIN ---------------- */
+function openAdmin(){document.getElementById('adminScreen').classList.add('show');document.getElementById('adminLogin').style.display='block';document.getElementById('adminApp').style.display='none';document.getElementById('pw').value='';document.getElementById('pw').focus();}
+function closeAdmin(){document.getElementById('adminScreen').classList.remove('show');}
+function doLogin(){
+  const v=document.getElementById('pw').value;
+  if(v==='greatescape'){document.getElementById('adminLogin').style.display='none';document.getElementById('adminApp').style.display='block';renderAdmin();}
+  else{document.getElementById('loginErr').textContent='Incorrect password. (Hint: greatescape)';}
+}
+function atab(name,btn){
+  document.querySelectorAll('.atab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
+  document.querySelectorAll('.apanel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('ap-'+name).classList.add('active');
+}
+function renderStats(){
+  document.getElementById('statRow').innerHTML=`
+    <div class="astat"><div class="l">Live City Pages</div><div class="v">${cities.length} <small>indexed</small></div></div>
+    <div class="astat"><div class="l">Sitemap URLs</div><div class="v">${cities.length+projects.length+posts.length+5}</div></div>
+    <div class="astat"><div class="l">Portfolio Projects</div><div class="v">${projects.length}</div></div>
+    <div class="astat"><div class="l">New Leads</div><div class="v">${leads.length}</div></div>`;
+}
+function renderCityRows(){
+  document.getElementById('cityRows').innerHTML=cities.map((c,i)=>`
+    <tr><td><b>${c.name}</b></td><td>${c.county}</td>
+    <td class="mono" style="font-size:12px;color:var(--steel)">/website-development/${c.name.toLowerCase().replace(/[^a-z]+/g,'-')}</td>
+    <td><span class="live-chip">Live</span></td>
+    <td><span class="open-link" onclick="previewCity(${i})">Preview ↗</span></td></tr>`).join('');
+}
+function previewCity(i){closeAdmin();go('city');loadCity(cities[i]);}
+function addCity(){
+  const name=document.getElementById('c-name').value.trim();
+  if(!name){toast('Add a city name first');return;}
+  const land=(document.getElementById('c-land').value||'').split(',').map(s=>s.trim()).filter(Boolean);
+  cities.push({
+    name,
+    county:document.getElementById('c-county').value.trim()||'North Idaho',
+    coord:document.getElementById('c-coord').value.trim()||'48.0°N 116.5°W',
+    landmarks:land.length?land:[name],
+    intro:document.getElementById('c-intro').value.trim()||`${name} businesses deserve to be found first. We build local sites and SEO that put you at the top of the map for ${name} searches.`,
+    quote:"Great Escape helped my small business get found online.", who:"Local client · "+name
+  });
+  ['c-name','c-county','c-coord','c-land','c-intro'].forEach(id=>document.getElementById(id).value='');
+  renderCityRows();renderStats();renderClients();
+  toast(`<b>${name}</b> page published &amp; added to sitemap`);
+}
+function renderProjRows(){
+  document.getElementById('projRows').innerHTML=projects.map((p,i)=>`
+    <tr><td><b>${p.name}</b></td><td>${p.loc}</td><td>${p.svcs.join(', ')}</td>
+    <td><span class="open-link" onclick="removeProj(${i})" style="color:#c0392b">Remove</span></td></tr>`).join('');
+}
+function removeProj(i){projects.splice(i,1);renderProjRows();renderPortfolio();renderStats();renderClients();toast('Project removed');}
+function addProject(){
+  const name=document.getElementById('p-name').value.trim();
+  if(!name){toast('Add a project name first');return;}
+  projects.unshift({name, loc:document.getElementById('p-loc').value.trim()||'North Idaho', svcs:(document.getElementById('p-svcs').value||'Web Design').split(',').map(s=>s.trim()).filter(Boolean)});
+  ['p-name','p-loc','p-svcs'].forEach(id=>document.getElementById(id).value='');
+  renderProjRows();renderPortfolio();renderStats();renderClients();
+  toast(`<b>${name}</b> added to portfolio`);
+}
+function renderBlogRows(){
+  document.getElementById('blogRows').innerHTML=posts.map(p=>`<tr><td><b>${p.title}</b></td><td class="mono" style="font-size:12px">${p.date}</td><td><span class="live-chip">${p.status}</span></td></tr>`).join('');
+}
+function addPost(){
+  const t=document.getElementById('b-title').value.trim();if(!t){toast('Add a title');return;}
+  posts.unshift({title:t,date:new Date().toISOString().slice(0,10),status:'Published'});
+  document.getElementById('b-title').value='';renderBlogRows();renderStats();toast('Post published');
+}
+function renderLeads(){
+  const rows=document.getElementById('leadRows');const none=document.getElementById('noLeads');
+  if(!leads.length){rows.innerHTML='';none.style.display='block';return;}
+  none.style.display='none';
+  rows.innerHTML=leads.map(l=>`<tr><td><b>${l.name}</b></td><td>${l.company}</td><td class="mono" style="font-size:12px">${l.email}</td><td>${l.looking}</td></tr>`).join('');
+}
+function renderTestRows(){
+  document.getElementById('testRows').innerHTML=testimonials.map(t=>`<tr><td style="max-width:480px">${t.q}</td><td><b>${t.who}</b><br><span style="font-size:12px;color:var(--slate-2)">${t.loc}</span></td></tr>`).join('');
+}
+function renderAdmin(){renderStats();renderCityRows();renderProjRows();renderBlogRows();renderLeads();renderTestRows();}
+
+/* ---------------- TOAST ---------------- */
+let toastT;
+function toast(html){const t=document.getElementById('toast');t.innerHTML=html;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2600);}
+
+/* ---------------- INIT ---------------- */
+renderClients();renderOfferings();renderPortfolio();renderTest();
+</script>
+</body>
+</html>
