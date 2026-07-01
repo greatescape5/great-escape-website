@@ -23,7 +23,7 @@ export default function Nav() {
 
   return (
     <>
-      <header className="nav">
+      <header className="nav" onMouseLeave={() => setDrop(false)}>
         <div className="wrap nav-in">
           <Link href="/" className="brand" onClick={close}>
             <img className="mark" src="/logo-mark.png" alt="Great Escape" />
@@ -31,20 +31,8 @@ export default function Nav() {
           </Link>
           <nav className="links">
             <Link href="/" onClick={close}>Home</Link>
-            <span
-              className={'has-drop' + (drop ? ' open' : '')}
-              onMouseEnter={() => setDrop(true)}
-              onMouseLeave={() => setDrop(false)}
-            >
+            <span className={'has-drop' + (drop ? ' open' : '')} onMouseEnter={() => setDrop(true)}>
               <Link href={firstCity} onClick={close}>Web Development <span className="caret">▼</span></Link>
-              {drop && cities.length > 0 && (
-                <div className="navdrop-menu">
-                  <div className="navdrop-head">Towns we serve</div>
-                  {cities.map((c) => (
-                    <Link key={c.slug} href={`/website-development/${c.slug}`} onClick={close}>{c.name}</Link>
-                  ))}
-                </div>
-              )}
             </span>
             <Link href="/#instore" onClick={close}>In-Store Ads</Link>
             <Link href="/trackd" onClick={close}>Trackd CRM</Link>
@@ -58,6 +46,19 @@ export default function Nav() {
             </button>
           </div>
         </div>
+
+        {drop && cities.length > 0 && (
+          <div className="navdrop-panel">
+            <div className="navdrop-inner">
+              <div className="navdrop-title">Towns we serve</div>
+              <div className="navdrop-grid">
+                {cities.map((c) => (
+                  <Link key={c.slug} href={`/website-development/${c.slug}`} onClick={close}>{c.name}</Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
       </header>
 
       <div className={'mnav' + (open ? ' open' : '')}>
