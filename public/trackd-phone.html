@@ -1,0 +1,315 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#EDEBE6; --card:#FAFAF7; --cardBorder:#D8D4CB; --steel:#1A1A1A; --steelMid:#2E2E2E;
+    --gold:#C8A96E; --muted:#7A7570; --mutedLight:#ADA9A2; --danger:#A0341E; --success:#2E6644; --warning:#8A6020;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Inter',system-ui,sans-serif;
+    background:radial-gradient(circle at 50% 0%,#262422 0%,#141312 60%,#0c0b0b 100%);
+    color:#fff;overflow:hidden;
+    display:flex;flex-direction:column;align-items:center;
+    padding:26px 20px 30px;
+  }
+  .stage{display:flex;align-items:center;gap:56px;flex-wrap:wrap;justify-content:center;max-width:1100px}
+
+  /* Phone */
+  .phone{
+    position:relative;width:330px;height:680px;border-radius:46px;
+    background:#0a0a0a;padding:13px;
+    box-shadow:0 50px 90px -20px rgba(0,0,0,.7), 0 0 0 2px #2a2a2a, inset 0 0 0 2px #000;
+    flex-shrink:0;
+  }
+  .notch{position:absolute;top:13px;left:50%;transform:translateX(-50%);width:120px;height:26px;background:#0a0a0a;border-radius:0 0 18px 18px;z-index:30}
+  .screen{
+    position:relative;width:100%;height:100%;border-radius:34px;overflow:hidden;background:var(--bg);
+  }
+  .scroll{position:absolute;inset:0;overflow:hidden}
+
+  /* slide system */
+  .slide{position:absolute;inset:0;opacity:0;transform:translateY(8px);transition:opacity .5s ease,transform .5s ease;pointer-events:none;display:flex;flex-direction:column}
+  .slide.active{opacity:1;transform:none;pointer-events:auto}
+
+  /* app header */
+  .hd{background:var(--steel);border-bottom:3px solid var(--gold);padding:38px 16px 14px}
+  .hd .ey{font-size:10px;font-weight:800;letter-spacing:1.5px;color:var(--gold);text-transform:uppercase}
+  .hd .ti{font-size:21px;font-weight:900;color:#fff;margin-top:3px;display:flex;justify-content:space-between;align-items:center}
+  .hd .pillrow{display:flex;gap:6px}
+  .hd .pill{border:1px solid #444;border-radius:8px;color:var(--mutedLight);font-size:10px;padding:5px 9px;font-weight:600}
+  .body{padding:14px;overflow-y:auto;flex:1}
+  .body::-webkit-scrollbar{display:none}
+
+  .qadd{width:100%;background:var(--steel);color:var(--gold);border:2px solid var(--gold);border-radius:12px;padding:13px;font-weight:800;font-size:14px;text-align:center;margin-bottom:14px}
+
+  .card{background:var(--card);border:1px solid var(--cardBorder);border-radius:14px;overflow:hidden;margin-bottom:14px}
+  .csec{background:var(--steel);padding:11px 15px;border-bottom:2px solid var(--gold);display:flex;justify-content:space-between;align-items:center}
+  .csec .lbl{font-size:11px;font-weight:800;letter-spacing:1px;color:var(--gold);text-transform:uppercase}
+  .csec .n{font-size:12px;font-weight:800;color:var(--mutedLight)}
+
+  .row{padding:12px 15px;border-bottom:1px solid var(--cardBorder);display:flex;justify-content:space-between;align-items:center}
+  .row:last-child{border-bottom:none}
+  .row .nm{font-weight:700;font-size:14px;color:var(--steel)}
+  .row .sub{font-size:12px;color:var(--muted);margin-top:2px}
+  .row .sub.warn{color:var(--danger);font-weight:700}
+  .callbtn{background:var(--gold);color:var(--steel);border-radius:8px;padding:7px 13px;font-weight:800;font-size:12px}
+
+  .stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
+  .stat{background:var(--card);border:1px solid var(--cardBorder);border-radius:10px;padding:11px 8px;text-align:center}
+  .stat .v{font-size:22px;font-weight:900;line-height:1}
+  .stat .l{font-size:10px;color:var(--muted);margin-top:3px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+
+  .pipe{background:var(--card);border:1px solid var(--cardBorder);border-radius:12px;padding:14px 15px;margin-bottom:14px}
+  .pipe .top{display:flex;justify-content:space-between;align-items:center}
+  .pipe .k{font-size:10px;color:var(--muted);font-weight:700;letter-spacing:1px;text-transform:uppercase}
+  .pipe .big{font-size:22px;font-weight:900;color:var(--steel);margin-top:2px}
+  .pipe .gold{font-size:16px;font-weight:800;color:var(--gold);margin-top:2px;text-align:right}
+  .pipebar{margin-top:12px;display:flex;gap:3px;height:5px;border-radius:3px;overflow:hidden}
+  .pipebar i{flex:1;background:var(--gold)}
+  .pipebar i:nth-child(2){background:var(--warning);flex:.6}
+  .pipebar i:nth-child(3){background:var(--success);flex:1.4}
+
+  .srow{display:flex;gap:8px;margin-bottom:12px}
+  .srch{flex:2;background:var(--card);border:1px solid var(--cardBorder);border-radius:10px;padding:11px 13px;font-size:13px;color:var(--muted)}
+  .sortb{flex:1;background:var(--card);border:1px solid var(--cardBorder);border-radius:10px;padding:11px 8px;font-size:12px;font-weight:700;color:var(--steel);display:flex;align-items:center;justify-content:space-between}
+  .filters{display:flex;gap:6px;overflow:hidden;margin-bottom:12px}
+  .fpill{padding:5px 13px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap;background:var(--card);color:var(--muted)}
+  .fpill.on{background:var(--steel);color:var(--gold)}
+
+  .jcard{background:var(--card);border:1px solid var(--cardBorder);border-radius:12px;padding:14px;margin-bottom:10px;border-left:3px solid var(--gold)}
+  .jcard .top{display:flex;justify-content:space-between;align-items:flex-start}
+  .jcard .nm{font-weight:800;font-size:15px;color:var(--steel)}
+  .jcard .addr{font-size:12px;color:var(--muted);margin-top:5px}
+  .jcard .foot{display:flex;justify-content:space-between;align-items:center;margin-top:9px}
+  .jcard .biz{font-size:12px;color:var(--muted)}
+  .jcard .amt{font-weight:900;color:var(--gold);font-size:16px}
+  .badge{border-radius:20px;padding:3px 10px;font-size:10px;font-weight:800}
+  .badge.lead{background:#EEF1F8;color:#3A68C8}
+  .badge.active{background:#EBF5EE;color:var(--success)}
+  .badge.paid{background:#EBF5EE;color:var(--success)}
+  .badge.pending{background:#FBF6EA;color:var(--warning)}
+
+  .btnrow{display:flex;gap:8px;margin-bottom:16px}
+  .binv{flex:1;background:var(--steel);color:var(--gold);border:2px solid var(--gold);border-radius:10px;padding:11px;font-weight:800;font-size:13px;text-align:center}
+  .bico{background:var(--gold);color:var(--steel);border-radius:10px;padding:11px 14px;display:flex;align-items:center}
+  .bico.alt{background:var(--steelMid);color:#fff}
+  .field{padding:11px 0;border-bottom:1px solid var(--cardBorder);display:flex;justify-content:space-between;align-items:center}
+  .field .fl{font-size:9px;font-weight:800;color:var(--mutedLight);text-transform:uppercase;letter-spacing:1px}
+  .field .fv{font-size:14px;color:var(--steel);font-weight:500;margin-top:3px}
+  .field .fv.gold{color:var(--gold);font-weight:900}
+  .pencil{color:var(--mutedLight)}
+  .fieldcard{background:var(--card);border:1px solid var(--cardBorder);border-radius:14px;padding:4px 15px;margin-bottom:14px}
+
+  .invrow{padding:12px 15px;border-bottom:1px solid var(--cardBorder)}
+  .invrow:last-child{border-bottom:none}
+  .invrow .top{display:flex;justify-content:space-between;align-items:center}
+  .invrow .amt{font-weight:900;font-size:16px;color:var(--steel)}
+  .invrow .dt{font-size:11px;color:var(--muted);margin-top:3px}
+  .invrow .acts{display:flex;gap:12px;margin-top:8px;align-items:center}
+  .invrow .lk{font-size:12px;font-weight:700;display:flex;align-items:center;gap:4px}
+  .invrow .lk.pdf{color:var(--success)}
+  .invrow .lk.pay{color:var(--gold)}
+  .invrow .del{margin-left:auto;color:var(--danger)}
+
+  .payhd{background:var(--steel);border-bottom:3px solid var(--gold);padding:38px 16px 16px}
+  .payhd .back{background:rgba(255,255,255,.1);color:var(--gold);font-size:12px;font-weight:700;padding:5px 11px;border-radius:8px;display:inline-block;margin-bottom:10px}
+  .payhd .ti{font-size:20px;font-weight:900;color:#fff}
+  .payhd .sub{font-size:12px;color:var(--mutedLight);margin-top:2px}
+  .paycard{background:var(--card);border:1px solid var(--cardBorder);border-radius:14px;padding:22px;text-align:center;margin-top:16px}
+  .paycard .circ{width:54px;height:54px;border-radius:50%;background:#EBF5EE;display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
+  .paycard .h{font-size:16px;font-weight:800;color:var(--success);margin-bottom:6px}
+  .paycard .p{font-size:13px;color:var(--muted);line-height:1.5}
+
+  .ibtitle{font-size:13px;font-weight:800;color:var(--success);display:flex;align-items:center;gap:8px;margin-bottom:4px}
+  .ibhint{font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.4}
+  .ibshare{width:100%;background:var(--success);color:#fff;border-radius:10px;padding:12px;font-weight:800;font-size:14px;text-align:center;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:8px}
+  .ibsub{display:flex;gap:8px}
+  .ibsub div{flex:1;background:var(--bg);border:1px solid var(--cardBorder);border-radius:10px;padding:10px;font-weight:700;font-size:13px;color:var(--steel);text-align:center}
+  .greencard{background:#EBF5EE;border:1px solid #3A8A56;border-radius:12px;padding:16px;margin-bottom:10px}
+
+  .nav{position:absolute;bottom:0;left:0;right:0;height:62px;background:var(--steel);border-top:3px solid var(--gold);display:flex;align-items:flex-start;z-index:20}
+  .nav .it{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding-top:9px;color:var(--mutedLight)}
+  .nav .it.on{color:var(--gold)}
+  .nav .it .t{font-size:9px;font-weight:600}
+  .nav .plus{flex:1;display:flex;justify-content:center;align-items:flex-start;padding-top:5px}
+  .nav .plus div{width:42px;height:42px;border-radius:50%;background:var(--gold);color:var(--steel);display:flex;align-items:center;justify-content:center;margin-top:-21px;box-shadow:0 2px 12px rgba(200,169,110,.6);font-size:24px;font-weight:300}
+  svg{display:block}
+
+  .side{max-width:340px;flex-shrink:0}
+  .side .step{opacity:.35;padding:18px 0 18px 22px;border-left:2px solid #333;position:relative;transition:opacity .4s}
+  .side .step.on{opacity:1;border-left-color:var(--gold)}
+  .side .step.on::before{content:"";position:absolute;left:-7px;top:24px;width:12px;height:12px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 4px rgba(200,169,110,.2)}
+  .side .step h3{font-size:18px;font-weight:800;margin-bottom:6px;color:#fff}
+  .side .step p{font-size:14px;color:#bdb9b2;line-height:1.55;font-weight:400}
+  .dots{display:flex;gap:7px;margin-top:30px;justify-content:center}
+  .dots b{width:8px;height:8px;border-radius:50%;background:#3a3a3a;transition:.3s;cursor:pointer}
+  .dots b.on{background:var(--gold);width:22px;border-radius:4px}
+
+  @media(max-width:920px){.side{order:3;max-width:330px}.stage{gap:34px}}
+
+body{background:transparent!important;min-height:auto;padding:14px 10px}
+.stage{gap:0}
+</style></head><body>
+<div class="stage"><div class="phone">
+      <div class="notch"></div>
+      <div class="screen">
+        <div class="scroll">
+
+          <div class="slide active" data-s="0">
+            <div class="hd">
+              <div class="ey">Homestead · Concrete &amp; Excavation</div>
+              <div class="ti">Dashboard <span class="pillrow"><span class="pill">Payments</span><span class="pill">Sign Out</span></span></div>
+            </div>
+            <div class="body" style="padding-bottom:74px">
+              <div class="qadd">📞 Quick Add Call-Back</div>
+              <div class="card">
+                <div class="csec"><span class="lbl">Today's Call-Backs</span><span class="n" style="color:#F5A090">2</span></div>
+                <div class="row"><div><div class="nm">Big Boy</div><div class="sub warn">⚠ Overdue 2026-06-26</div></div><div class="callbtn">Call</div></div>
+                <div class="row"><div><div class="nm">Great Escape</div><div class="sub warn">⚠ Tyler Harris · Overdue 06-27</div></div><div class="callbtn">Call</div></div>
+              </div>
+              <div class="stats">
+                <div class="stat"><div class="v" style="color:var(--success)">3</div><div class="l">Active</div></div>
+                <div class="stat"><div class="v" style="color:#3A68C8">2</div><div class="l">Leads</div></div>
+                <div class="stat"><div class="v" style="color:var(--danger)">2</div><div class="l">Due</div></div>
+              </div>
+              <div class="card">
+                <div class="csec"><span class="lbl">Active Jobs</span><span class="n">3</span></div>
+                <div class="row"><div><div class="nm">Ridgeline Builders</div><div class="sub">📍 Timber Ridge Rd · Crew A</div></div><div class="amt" style="font-weight:900;color:var(--gold)">$42,000</div></div>
+                <div class="row"><div><div class="nm">Vance Hardscape</div><div class="sub">📍 5th &amp; Cedar · Crew B</div></div><div class="amt" style="font-weight:900;color:var(--gold)">$18,500</div></div>
+              </div>
+              <div class="pipe">
+                <div class="top">
+                  <div><div class="k">Pipeline</div><div class="big">$94,000</div></div>
+                  <div><div class="k">Won / Active</div><div class="gold">$60,500</div></div>
+                </div>
+                <div class="pipebar"><i></i><i></i><i></i></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="slide" data-s="1">
+            <div class="hd">
+              <div class="ey">Homestead · Concrete &amp; Excavation</div>
+              <div class="ti">Jobs</div>
+            </div>
+            <div class="body" style="padding-bottom:74px">
+              <div class="srow">
+                <div class="srch">Search jobs, contacts…</div>
+                <div class="sortb">Contact A–Z ▾</div>
+              </div>
+              <div class="filters">
+                <div class="fpill on">All</div><div class="fpill">Lead</div><div class="fpill">Bidding</div><div class="fpill">Active</div>
+              </div>
+              <div class="jcard"><div class="top"><div class="nm">Mike Hendricks</div><span class="badge active">Active</span></div><div class="addr">📍 1234 Timber Ridge Rd</div><div class="foot"><div class="biz">Ridgeline Builders</div><div class="amt">$42,000</div></div></div>
+              <div class="jcard"><div class="top"><div class="nm">Sarah Vance</div><span class="badge lead">Lead</span></div><div class="addr">📍 540 Cedar St</div><div class="foot"><div class="biz">Vance Hardscape</div><div class="amt">$18,500</div></div></div>
+              <div class="jcard"><div class="top"><div class="nm">Tyler Harris</div><span class="badge lead">Lead</span></div><div class="addr">📍 138 Penny Lane</div><div class="foot"><div class="biz">Great Escape</div><div class="amt">$8,200</div></div></div>
+            </div>
+          </div>
+
+          <div class="slide" data-s="2">
+            <div class="hd">
+              <div class="ey">Lead</div>
+              <div class="ti">Mike Hendricks</div>
+            </div>
+            <div class="body" style="padding-bottom:74px">
+              <div class="btnrow">
+                <div class="binv">🧾 Create Invoice</div>
+                <div class="bico">📞</div>
+                <div class="bico alt">💬</div>
+              </div>
+              <div class="fieldcard">
+                <div class="field"><div><div class="fl">Company</div><div class="fv">Ridgeline Builders</div></div><svg class="pencil" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></div>
+                <div class="field"><div><div class="fl">Job Site Address</div><div class="fv">1234 Timber Ridge Rd</div></div><svg class="pencil" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></div>
+                <div class="field"><div><div class="fl">Bid Amount</div><div class="fv gold">$42,000</div></div><svg class="pencil" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></div>
+              </div>
+              <div class="card">
+                <div class="csec"><span class="lbl">🧾 Invoices</span></div>
+                <div class="invrow">
+                  <div class="top"><div class="amt">$15,000</div><span class="badge paid">Paid</span></div>
+                  <div class="dt">2026-06-30</div>
+                  <div class="acts"><span class="lk pdf">📄 View PDF</span><span class="del">🗑</span></div>
+                </div>
+                <div class="invrow">
+                  <div class="top"><div class="amt">$27,000</div><span class="badge pending">Pending</span></div>
+                  <div class="dt">2026-06-30</div>
+                  <div class="acts"><span class="lk pdf">📄 View PDF</span><span class="lk pay">💳 Pay page</span><span class="del">🗑</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="slide" data-s="3">
+            <div class="hd">
+              <div class="ey">Invoice · INV-185709</div>
+              <div class="ti">Bill Ridgeline</div>
+            </div>
+            <div class="body" style="padding-bottom:20px">
+              <div class="card" style="padding:14px 15px">
+                <div style="font-size:10px;font-weight:800;color:var(--mutedLight);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Line Items</div>
+                <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--steel);padding:6px 0;border-bottom:1px solid var(--cardBorder)"><span>Excavation &amp; grading</span><b>$9,000</b></div>
+                <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--steel);padding:6px 0;border-bottom:1px solid var(--cardBorder)"><span>Foundation pour</span><b>$6,000</b></div>
+                <div style="display:flex;justify-content:space-between;font-size:15px;color:var(--steel);padding:10px 0 2px;font-weight:900"><span>Total</span><span>$15,000</span></div>
+              </div>
+              <div class="greencard">
+                <div class="ibtitle">✓ Invoice Ready</div>
+                <div class="ibhint">Share the PDF — it has a Pay Online button built in. Or copy the raw link.</div>
+                <div class="ibshare">💬 Share Invoice (Text / Email)</div>
+                <div class="ibsub"><div>Download PDF</div><div>Copy Link</div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="slide" data-s="4">
+            <div class="payhd">
+              <div class="back">‹ Back</div>
+              <div class="ti">Payments</div>
+              <div class="sub">Connect Stripe to send payable invoices.</div>
+            </div>
+            <div class="body" style="padding-bottom:74px">
+              <div class="paycard">
+                <div class="circ">
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2E6644" stroke-width="2.2"><path d="M20 6 9 17l-5-5"/></svg>
+                </div>
+                <div class="h">Stripe Connected</div>
+                <div class="p">You're all set. Invoices you send can now be paid online, and payouts go straight to your bank.</div>
+              </div>
+              <div class="pipe" style="margin-top:14px">
+                <div class="top">
+                  <div><div class="k">Paid out this month</div><div class="big">$28,400</div></div>
+                  <div><div class="k">To your bank</div><div class="gold">2 payouts</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="nav">
+            <div class="it on"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span class="t">Dashboard</span></div>
+            <div class="it"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18v3h3l6.3-6.3a4 4 0 0 0 5.4-5.4l-2.8 2.8-2-2 2.8-2.8z"/></svg><span class="t">Jobs</span></div>
+            <div class="plus"><div>+</div></div>
+            <div class="it"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span class="t">Follow-ups</span></div>
+            <div class="it"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><span class="t">Invoice</span></div>
+          </div>
+
+        </div>
+      </div>
+    </div></div>
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  const steps=[...document.querySelectorAll('.step')];
+  const dots=[...document.querySelectorAll('.dots b')];
+  let i=0, timer;
+  function go(n){
+    i=(n+slides.length)%slides.length;
+    slides.forEach(s=>s.classList.toggle('active',+s.dataset.s===i));
+    steps.forEach(s=>s.classList.toggle('on',+s.dataset.c===i));
+    dots.forEach(d=>d.classList.toggle('on',+d.dataset.d===i));
+  }
+  function loop(){timer=setInterval(()=>go(i+1),3400);}
+  function reset(){clearInterval(timer);loop();}
+  dots.forEach(d=>d.addEventListener('click',()=>{go(+d.dataset.d);reset();}));
+  steps.forEach(s=>s.addEventListener('click',()=>{go(+s.dataset.c);reset();}));
+  loop();
+</script>
+</body></html>
