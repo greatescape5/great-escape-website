@@ -306,3 +306,15 @@
   .rowbtn.ok:hover{background:#178048;color:#fff}
   .rowbtn.no{background:#c0392b;border-color:#c0392b;color:#fff}
   .rowbtn.no:hover{background:#a5311f;color:#fff}
+
+/* ---- header cities dropdown ---- */
+.has-drop{position:relative}
+.has-drop>a{display:inline-flex;align-items:center;gap:5px;cursor:pointer}
+.caret{font-size:9px;opacity:.7;transition:transform .18s}
+.has-drop.open .caret{transform:rotate(180deg)}
+.navdrop-menu{position:absolute;top:calc(100% + 10px);left:50%;transform:translateX(-50%);background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 18px 44px rgba(6,32,52,.16);padding:8px;min-width:220px;z-index:200;display:grid;gap:2px}
+.navdrop-head{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--slate);padding:6px 12px 4px;font-weight:700}
+.navdrop-menu a{display:block;padding:9px 12px;border-radius:8px;font-size:14px;color:var(--ink);white-space:nowrap;font-weight:500}
+.navdrop-menu a:hover{background:var(--paper-2);color:var(--blue)}
+.msub{display:grid;margin:2px 0 8px;padding-left:16px;border-left:2px solid rgba(255,255,255,.16)}
+.msub a{font-size:15px!important;padding:9px 0!important;opacity:.82}
